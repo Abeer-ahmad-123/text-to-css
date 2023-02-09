@@ -1,0 +1,49 @@
+#input {
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+.inputWrapper {
+  display: grid;
+  place-items: center;
+}
+#myDiv,
+#input {
+  position: absolute;
+  top: 0px;
+  height: 30px;
+  margin-top: 10px;
+  width: 30%;
+  border-radius: 5px;
+}
+#color {
+  color: black;
+  margin-top: 10px;
+  display: flex;
+  margin-left: 10px;
+}
+
+#wordCount {
+  margin-top: 60px;
+}
+#colorName,
+.fontSizeWrapper,
+.backgroundWrapper,
+.fontFamilyWrapper {
+  margin-top: 10px;
+}
+#backgroundColor,
+#fontFamily {
+  display: flex;
+  margin-left: 10px;
+}
+#backgroundColor li:nth-child(2) {
+  margin-left: 5px;
+}
+.colorWrapper {
+  display: flex;
+}
+.fontSizeWrapper,
+#fontSize,
+.backgroundWrapper,
+.fontFamilyWrapper {
+  display: flex;
+}

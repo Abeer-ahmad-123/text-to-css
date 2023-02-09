@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="index.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="myDiv" contenteditable="true"></div>
+    <div class="inputWrapper"><input id="input" /></div>
+    <div id="wordCount">Word count here</div>
+    <div class="colorWrapper">
+      <div id="colorName"></div>
+      <div id="color"></div>
+    </div>
+
+    <div class="fontSizeWrapper">
+      <div id="font"></div>
+      <div id="fontSize"></div>
+    </div>
+    <div class="backgroundWrapper">
+      <div id="background"></div>
+
+      <div id="backgroundColor"></div>
+    </div>
+    <div class="fontFamilyWrapper">
+      <div id="fontFamilyName"></div>
+      <div id="fontFamily"></div>
+    </div>
+  </body>
+  <script>
+    console.log('Checking paste operation.');
+    document.addEventListener('paste', function (e) {
+      console.log('The Past is Happens');
+      console.log(e.clipboardData.types);
+      ['text/plain', 'text/html'].forEach((format) => {
+        console.log(`Format: ${format}`);
+        const style = e.clipboardData.getData(format);
+        const input = e.clipboardData.getData(format);
+
+        document.getElementById('wordCount').innerHTML =
+          'Word Count: ' + input.length;
+
+        let styleSubStr = 'style="';
+        let styleEndStr = '">';
+        let styleStartIndexes = [];
+        let styleEndIndexes = [];
+        let styleArray2 = [];
+        let startindex;
+        let endIndex;
+        let i = 0;
+        let colorArray = [];
+        let fontSizeArray = [];
+        let backgroundArray = [];
+        let fontFamilyArray = [];
+
+        let newArray2;
+        while (i < input.length) {
+          let index = input.indexOf(styleSubStr, i);
+          let endIndex = input.indexOf(styleEndStr, i);
+          if (index === -1) break;
+          if (endIndex === -1) break;
+          styleStartIndexes.push(index + 7);
+          styleEndIndexes.push(endIndex);
+          i = index + styleSubStr.length;
+          i = endIndex + styleSubStr.length;
+        }
+
+        var newArray = styleStartIndexes.map(function (value, index) {
+          return styleStartIndexes[index] + ',' + styleEndIndexes[index];
+        });
+        console.log({ styleArray2 });
+        for (var k = 0; k < newArray.length; k++) {
+          const val = newArray[k].split(',');
+          styleArray2 = input.substring(val[0], val[1]);
+          console.log('styleArray2', styleArray2);
+
+          const mapVal = styleArray2.split(';');
+          for (var j = 0; j < mapVal.length; j++) {
+            let result = mapVal[j].replace('&quot', '');
+            if (mapVal[j].includes('color')) {
+              if (!mapVal[j].includes('-')) {
+                colorArray.push(mapVal[j].split(':')[1]);
+              }
+            }
+            if (mapVal[j].includes('font-size')) {
+              fontSizeArray.push(mapVal[j].split(':')[1]);
+            }
+
+            if (mapVal[j].includes('background-color')) {
+              backgroundArray.push(mapVal[j].split(':')[1]);
+            }
+
+            if (
+              result.includes('JetBrains Mono') ||
+              result.includes('Courier New') ||
+              result.includes('ui-monospace') ||
+              result.includes('SFMono-Regular') ||
+              result.includes('Menlo') ||
+              result.includes('Monaco') ||
+              result.includes('Consolas')
+            ) {
+              fontFamilyArray.push(result);
+            }
+          }
+        }
+        let uniqueArray = [...new Set(colorArray)];
+        let fontSizeUniqueArray = [...new Set(fontSizeArray)];
+        let backgroundColorUniqueArray = [...new Set(backgroundArray)];
+        let fontFamilyUniqueArray = [...new Set(fontFamilyArray)];
+
+        document.getElementById('background').innerHTML = 'Background Color: ';
+        for (let a = 0; a < backgroundColorUniqueArray.length; a++) {
+          // Create an "li" node:
+          const node = document.createElement('li');
+          node.style.background = backgroundColorUniqueArray[a];
+          node.style.listStyle = 'none';
+          node.style.width = '20px';
+          node.style.height = '20px';
+          document.getElementById('backgroundColor').appendChild(node);
+        }
+
+        document.getElementById('font').innerHTML = 'Font Size: ';
+
+        for (let a = 0; a < fontSizeUniqueArray.length; a++) {
+          // Create an "li" node:
+          const node = document.createElement('li');
+          const textnode = document.createTextNode(fontSizeUniqueArray[a]);
+          // Append the text node to the "li" node:
+          node.appendChild(textnode);
+          node.style.listStyle = 'none';
+          node.style.marginRight = '10px';
+
+          document.getElementById('fontSize').appendChild(node);
+        }
+        document.getElementById('fontFamilyName').innerHTML = 'Font Family: ';
+
+        for (let a = 0; a < fontFamilyUniqueArray.length; a++) {
+          // Create an "li" node:
+          const node = document.createElement('li');
+          const textnode = document.createTextNode(fontFamilyUniqueArray[a]);
+          // Append the text node to the "li" node:
+          node.appendChild(textnode);
+          node.style.listStyle = 'none';
+
+          document.getElementById('fontFamily').appendChild(node);
+        }
+
+        document.getElementById('colorName').innerHTML = 'Colors: ';
+
+        for (let a = 0; a < uniqueArray.length; a++) {
+          // Create an "li" node:
+          const node = document.createElement('li');
+          node.style.background = uniqueArray[a];
+          node.style.marginRight = '10px';
+          node.style.listStyle = 'none';
+          node.style.width = '20px';
+          node.style.height = '20px';
+          document.getElementById('color').appendChild(node);
+        }
+      });
+    });
+  </script>
+</html>
