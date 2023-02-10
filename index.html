@@ -228,7 +228,7 @@
         styleArray2 = input.substring(val[0], val[1]);
         let replaceQuot = styleArray2.replaceAll('&quot;', '');
         let replaceMonoQuot = replaceQuot.replaceAll('Mono&quot;', '');
-        let replaceVar = replaceMonoQuot.replaceAll('var(--bs-font', '');
+        let replaceVar = replaceMonoQuot.replaceAll('var(--', '');
         let replaceAllBrackets = replaceVar.replaceAll(')', '');
         const mapVal = replaceAllBrackets.split(';');
         for (var j = 0; j < mapVal.length; j++) {
@@ -239,7 +239,9 @@
             }
           }
           if (mapVal[j].includes('font-size')) {
-            fontSizeArray.push(mapVal[j].split(':')[1]);
+            if (mapVal[j].includes('px')) {
+              fontSizeArray.push(mapVal[j].split(':')[1]);
+            }
           }
 
           if (mapVal[j].includes('background-color')) {
