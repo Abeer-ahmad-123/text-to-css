@@ -8,11 +8,8 @@
     <title>Document</title>
   </head>
   <body>
-    <div class="inputWrapper">
-      <div id="myDiv" contenteditable="true"></div>
-
-      <input id="input" />
-    </div>
+    <div id="myDiv" contenteditable="true"></div>
+    <div class="inputWrapper"><input id="input" /></div>
     <div id="wordCount">Word count here</div>
     <div class="colorWrapper">
       <div id="colorName"></div>
@@ -36,14 +33,18 @@
   <script>
     console.log('Checking paste operation.');
     document.addEventListener('paste', function (e) {
-      //empty all div
+      let uniqueArray = [];
+      let fontSizeUniqueArray = [];
+      let backgroundColorUniqueArray = [];
+      let fontFamilyUniqueArray = [];
       emptyDiv();
-
       console.log('The Past is Happens');
       console.log(e.clipboardData.types);
       ['text/plain', 'text/html'].forEach((format) => {
         console.log(`Format: ${format}`);
+        const style = e.clipboardData.getData(format);
         const input = e.clipboardData.getData(format);
+        console.log(input);
         document.getElementById('wordCount').innerHTML =
           'Word Count: ' + input.length;
 
@@ -61,7 +62,8 @@
         let fontFamilyArray = [];
 
         let newArray2;
-        //to get start and end index of style
+
+        // to get start and end index of style
         gettingStartAndEndIndexes(
           i,
           input,
@@ -70,7 +72,7 @@
           styleSubStr,
           styleEndStr
         );
-        //making array of start and end index of  style on same index, may have multiple style
+
         var newArray = styleStartIndexes.map(function (value, index) {
           return styleStartIndexes[index] + ',' + styleEndIndexes[index];
         });
@@ -84,16 +86,12 @@
           backgroundArray,
           fontFamilyArray
         );
-
-        //making arrays unique
-        let uniqueArray = [...new Set(colorArray)];
-        let fontSizeUniqueArray = [...new Set(fontSizeArray)];
-        let backgroundColorUniqueArray = [...new Set(backgroundArray)];
-        let fontFamilyUniqueArray = [...new Set(fontFamilyArray)];
+        uniqueArray = [...new Set(colorArray)];
+        fontSizeUniqueArray = [...new Set(fontSizeArray)];
+        backgroundColorUniqueArray = [...new Set(backgroundArray)];
+        fontFamilyUniqueArray = [...new Set(fontFamilyArray)];
 
         document.getElementById('background').innerHTML = 'Background Color: ';
-
-        //if background array is empty then adding no background color found in div
         if (backgroundColorUniqueArray.length === 0) {
           arrayIsEmpty('No Background Color Found', 'backgroundColor');
         } else {
@@ -177,26 +175,6 @@
       document.getElementById('fontFamilyName').innerHTML = '';
       document.getElementById('fontFamily').innerHTML = '';
     }
-    function replaceInnerText(text, id, node) {
-      //if div has no ** found text in it then replacing it and then adding elements from array
-      if (document.getElementById(id).innerText === text) {
-        document.getElementById(id).innerText = '';
-        document.getElementById(id).appendChild(node);
-      } else {
-        document.getElementById(id).appendChild(node);
-      }
-    }
-    function arrayIsEmpty(text, id) {
-      //adding text no ** found of array is empty
-      // Create an "li" node:
-      const node = document.createElement('li');
-      const textnode = document.createTextNode(text);
-      // Append the text node to the "li" node:
-      node.appendChild(textnode);
-      node.style.listStyle = 'none';
-
-      document.getElementById(id).appendChild(node);
-    }
     function gettingStartAndEndIndexes(
       i,
       input,
@@ -215,6 +193,37 @@
         styleEndIndexes.push(endIndex);
         i = index + styleSubStr.length;
         i = endIndex + styleSubStr.length;
+      }
+    }
+    function replaceInnerText(text, id, node) {
+      //if div has no ** found text in it then replacing it and then adding elements from array
+      if (document.getElementById(id).innerText === text) {
+        document.getElementById(id).innerText = '';
+        document.getElementById(id).appendChild(node);
+      } else {
+        document.getElementById(id).appendChild(node);
+      }
+    }
+    function arrayIsEmpty(text, id) {
+      //adding text no ** found of array is empty
+      // Create an "li" node:
+      if (document.getElementById(id).innerText === text) {
+        document.getElementById(id).innerText = '';
+        const node = document.createElement('li');
+        const textnode = document.createTextNode(text);
+        // Append the text node to the "li" node:
+        node.appendChild(textnode);
+        node.style.listStyle = 'none';
+
+        document.getElementById(id).appendChild(node);
+      } else {
+        const node = document.createElement('li');
+        const textnode = document.createTextNode(text);
+        // Append the text node to the "li" node:
+        node.appendChild(textnode);
+        node.style.listStyle = 'none';
+
+        document.getElementById(id).appendChild(node);
       }
     }
     function addDatatoArray(
@@ -242,7 +251,11 @@
             }
           }
           if (mapVal[j].includes('font-size')) {
-            if (mapVal[j].includes('px')) {
+            if (
+              mapVal[j].includes('px') ||
+              mapVal[j].includes('rem') ||
+              mapVal[j].includes('vh')
+            ) {
               fontSizeArray.push(mapVal[j].split(':')[1]);
             }
           }
