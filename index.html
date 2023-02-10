@@ -57,7 +57,7 @@ let total=[];
       ['text/plain', 'text/html'].forEach((format) => {
        
         console.log(`Format: ${format}`);
-total.push(e.clipboardData.getData(format));
+        total.push(e.clipboardData.getData(format));
 
         const style = e.clipboardData.getData(format);
         const input = e.clipboardData.getData(format);
@@ -121,11 +121,20 @@ total.push(e.clipboardData.getData(format));
 
         document.getElementById('background').innerHTML = 'Background Color: ';
         if (backgroundColorUniqueArray.length === 0) {
+          console.log("trigggeredd")
           arrayIsEmpty('No Background Color Found', 'backgroundColor');
         } else {
           for (let a = 0; a < backgroundColorUniqueArray.length; a++) {
             // Create an "li" node of data in array:
             const node = document.createElement('li');
+            const NameNode = document.createElement('li');
+            const textnode = document.createTextNode(backgroundColorUniqueArray[a]+")");
+            // Append the text node to the "li" node:
+            NameNode.style.listStyle='none'
+            NameNode.style.marginRight='5px'
+            NameNode.appendChild(textnode);
+
+            node.style.listStyle = 'none';
             node.style.background = backgroundColorUniqueArray[a];
             node.style.listStyle = 'none';
             node.style.width = '20px';
@@ -137,7 +146,7 @@ total.push(e.clipboardData.getData(format));
             replaceInnerText(
               'No Background Color Found',
               'backgroundColor',
-              node
+              NameNode,node
             );
           }
         }
@@ -145,6 +154,7 @@ total.push(e.clipboardData.getData(format));
         document.getElementById('font').innerHTML = 'Font Size: ';
 
         if (fontSizeUniqueArray.length === 0) {
+
           arrayIsEmpty('No Font Size Found', 'fontSize');
         } else {
           for (let a = 0; a < fontSizeUniqueArray.length; a++) {
@@ -153,9 +163,14 @@ total.push(e.clipboardData.getData(format));
             const textnode = document.createTextNode(fontSizeUniqueArray[a]);
             // Append the text node to the "li" node:
             node.appendChild(textnode);
+            const NameNode = document.createElement('li');
+            const textnode2 = document.createTextNode('');
+            // Append the text node to the "li" node:
+            NameNode.style.listStyle='none'
+            NameNode.appendChild(textnode2);
             node.style.listStyle = 'none';
             node.style.marginRight = '10px';
-            replaceInnerText('No Font Size Found', 'fontSize', node);
+            replaceInnerText('No Font Size Found', 'fontSize', NameNode,node);
           }
         }
         document.getElementById('fontFamilyName').innerHTML = 'Font Family: ';
@@ -164,12 +179,18 @@ total.push(e.clipboardData.getData(format));
         } else {
           for (let a = 0; a < fontFamilyUniqueArray.length; a++) {
             // Create an "li" node:
+            
             const node = document.createElement('li');
             const textnode = document.createTextNode(fontFamilyUniqueArray[a]);
+            const NameNode = document.createElement('li');
+            const textnode2 = document.createTextNode('');
+            // Append the text node to the "li" node:
+            NameNode.style.listStyle='none'
+            NameNode.appendChild(textnode2);
             // Append the text node to the "li" node:
             node.appendChild(textnode);
             node.style.listStyle = 'none';
-            replaceInnerText('No Font Family Found', 'fontFamily', node);
+            replaceInnerText('No Font Family Found', 'fontFamily', NameNode,node);
           }
         }
         document.getElementById('colorName').innerHTML = 'Colors: ';
@@ -179,6 +200,12 @@ total.push(e.clipboardData.getData(format));
           for (let a = 0; a < uniqueArray.length; a++) {
             // Create an "li" node:
             const node = document.createElement('li');
+            const NameNode = document.createElement('li');
+            const textnode = document.createTextNode(uniqueArray[a]+")");
+            // Append the text node to the "li" node:
+            NameNode.style.listStyle='none'
+            NameNode.style.marginRight='5px'
+            NameNode.appendChild(textnode);
             node.style.background = uniqueArray[a];
             node.style.marginRight = '10px';
             node.style.listStyle = 'none';
@@ -187,7 +214,7 @@ total.push(e.clipboardData.getData(format));
             node.style.borderRadius = '30%';
             node.style.border = '1.5px solid black';
 
-            replaceInnerText('No Colors Found', 'color', node);
+            replaceInnerText('No Colors Found', 'color', NameNode,node);
           }
         }
       });
@@ -223,18 +250,30 @@ total.push(e.clipboardData.getData(format));
         i = endIndex + styleSubStr.length;
       }
     }
-    function replaceInnerText(text, id, node) {
+    function replaceInnerText(text, id, NameNode,node) {
       //if div has no ** found text in it then replacing it and then adding elements from array
       if (document.getElementById(id).innerText === text) {
         document.getElementById(id).innerText = '';
+        if(NameNode)
+        {
+          document.getElementById(id).appendChild(NameNode)
+
+        }
         document.getElementById(id).appendChild(node);
       } else {
+        if(NameNode)
+        {
+          document.getElementById(id).appendChild(NameNode)
+
+        }
+
         document.getElementById(id).appendChild(node);
       }
     }
     function arrayIsEmpty(text, id) {
       //adding text no ** found of array is empty
       // Create an "li" node:
+
       if (document.getElementById(id).innerText === text) {
         document.getElementById(id).innerText = '';
         const node = document.createElement('li');
