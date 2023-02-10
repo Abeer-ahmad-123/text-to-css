@@ -46,7 +46,7 @@
     document.addEventListener('paste', function (e) {
 
    
-
+      let input=[];
       let uniqueArray = [];
       let fontSizeUniqueArray = [];
       let backgroundColorUniqueArray = [];
@@ -58,10 +58,22 @@
        
         console.log(`Format: ${format}`);
         const style = e.clipboardData.getData(format);
-        const input = e.clipboardData.getData(format);
-        console.log(input);
+        input.push(e.clipboardData.getData(format))
+        console.log("input",input[0]);
+
+        function extractSubstr(str, regexp) {
+        return str.replace(/[^\w\s]|_/g, '')
+        .replace(/\s+/g, ' ')
+        .toLowerCase().match(regexp) || [];
+}
+        function getWordsByNonWhiteSpace(str) {
+       return extractSubstr(str, /\S+/g);
+}
+        var word = getWordsByNonWhiteSpace(input[0])
+          console.log(word.length)
+
         document.getElementById('wordCount').innerHTML =
-          'Word Count: ' + input.length;
+          'Word Count: ' + word.length;
 
         let styleSubStr = 'style="';
         let styleEndStr = '">';
