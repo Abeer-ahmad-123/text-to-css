@@ -1,15 +1,36 @@
 #input {
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
+.outer {
+  justify-content: center;
+}
+.infoWrapper {
+  width: 50%;
+}
 .inputWrapper {
   display: grid;
   place-items: center;
 }
+.outer {
+  margin-top: 310px;
+  display: flex;
+  place-items: center;
+}
+.infoWrapper {
+  display: grid;
+}
+#fontFamilyName {
+  width: 120px;
+}
+.inputWrapper h3 {
+  position: absolute;
+  top: 0px;
+}
 #myDiv,
 #input {
   position: absolute;
-  top: 0px;
-  height: 100px;
+  top: 40px;
+  height: 250px;
   margin-top: 10px;
   width: 50%;
   border-radius: 5px;
@@ -21,9 +42,6 @@
   margin-left: 10px;
 }
 
-#wordCount {
-  margin-top: 140px;
-}
 #colorName,
 .fontSizeWrapper,
 .backgroundWrapper,
@@ -46,4 +64,7 @@
 .backgroundWrapper,
 .fontFamilyWrapper {
   display: flex;
+}
+#input {
+  resize: none;
 }

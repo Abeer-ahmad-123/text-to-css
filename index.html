@@ -8,34 +8,45 @@
     <title>Document</title>
   </head>
   <body>
-    <div class="inputWrapper">
-      <div id="myDiv" contenteditable="true"></div>
+ 
+      <div class="inputWrapper">
+        <h3>Paste something here to get the style properties</h3>
+        <div id="myDiv" contenteditable="true"></div>
 
-      <input id="input" />
-    </div>
-    <div id="wordCount">Word count here</div>
-    <div class="colorWrapper">
-      <div id="colorName"></div>
-      <div id="color"></div>
-    </div>
+        <textarea id="input" type="text"></textarea>
+        </div>
+        <div class="outer">
+        <div class="infoWrapper">
+          <div id="wordCount">Word count here</div>
+          <div class="colorWrapper">
+            <div id="colorName"></div>
+            <div id="color"></div>
+          </div>
 
-    <div class="fontSizeWrapper">
-      <div id="font"></div>
-      <div id="fontSize"></div>
-    </div>
-    <div class="backgroundWrapper">
-      <div id="background"></div>
+          <div class="fontSizeWrapper">
+            <div id="font"></div>
+            <div id="fontSize"></div>
+          </div>
+          <div class="backgroundWrapper">
+            <div id="background"></div>
 
-      <div id="backgroundColor"></div>
+            <div id="backgroundColor"></div>
+          </div>
+          <div class="fontFamilyWrapper">
+            <div id="fontFamilyName"></div>
+            <div id="fontFamily"></div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="fontFamilyWrapper">
-      <div id="fontFamilyName"></div>
-      <div id="fontFamily"></div>
-    </div>
+   
   </body>
   <script>
     console.log('Checking paste operation.');
     document.addEventListener('paste', function (e) {
+
+   
+
       let uniqueArray = [];
       let fontSizeUniqueArray = [];
       let backgroundColorUniqueArray = [];
@@ -44,6 +55,7 @@
       console.log('The Past is Happens');
       console.log(e.clipboardData.types);
       ['text/plain', 'text/html'].forEach((format) => {
+       
         console.log(`Format: ${format}`);
         const style = e.clipboardData.getData(format);
         const input = e.clipboardData.getData(format);
