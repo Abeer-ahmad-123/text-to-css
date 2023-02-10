@@ -33,13 +33,21 @@
   <script>
     console.log('Checking paste operation.');
     document.addEventListener('paste', function (e) {
+      document.getElementById('wordCount').innerHTML = 'Worde Count Here';
+      document.getElementById('colorName').innerHTML = '';
+      document.getElementById('color').innerHTML = '';
+      document.getElementById('font').innerHTML = '';
+      document.getElementById('fontSize').innerHTML = '';
+      document.getElementById('background').innerHTML = '';
+      document.getElementById('backgroundColor').innerHTML = '';
+      document.getElementById('fontFamilyName').innerHTML = '';
+      document.getElementById('fontFamily').innerHTML = '';
+
       console.log('The Past is Happens');
       console.log(e.clipboardData.types);
       ['text/plain', 'text/html'].forEach((format) => {
         console.log(`Format: ${format}`);
-        const style = e.clipboardData.getData(format);
         const input = e.clipboardData.getData(format);
-
         document.getElementById('wordCount').innerHTML =
           'Word Count: ' + input.length;
 
@@ -71,13 +79,14 @@
         var newArray = styleStartIndexes.map(function (value, index) {
           return styleStartIndexes[index] + ',' + styleEndIndexes[index];
         });
-        console.log({ styleArray2 });
         for (var k = 0; k < newArray.length; k++) {
           const val = newArray[k].split(',');
           styleArray2 = input.substring(val[0], val[1]);
-          console.log('styleArray2', styleArray2);
-
-          const mapVal = styleArray2.split(';');
+          let replaceQuot = styleArray2.replaceAll('&quot;', '');
+          let replaceMonoQuot = replaceQuot.replaceAll('Mono&quot;', '');
+          let replaceVar = replaceMonoQuot.replaceAll('var(--bs-font', '');
+          let replaceAllBrackets = replaceVar.replaceAll(')', '');
+          const mapVal = replaceAllBrackets.split(';');
           for (var j = 0; j < mapVal.length; j++) {
             let result = mapVal[j].replace('&quot', '');
             if (mapVal[j].includes('color')) {
@@ -93,16 +102,8 @@
               backgroundArray.push(mapVal[j].split(':')[1]);
             }
 
-            if (
-              result.includes('JetBrains Mono') ||
-              result.includes('Courier New') ||
-              result.includes('ui-monospace') ||
-              result.includes('SFMono-Regular') ||
-              result.includes('Menlo') ||
-              result.includes('Monaco') ||
-              result.includes('Consolas')
-            ) {
-              fontFamilyArray.push(result);
+            if (mapVal[j].includes('font-family')) {
+              fontFamilyArray.push(mapVal[j].split(':')[1]);
             }
           }
         }
@@ -112,53 +113,131 @@
         let fontFamilyUniqueArray = [...new Set(fontFamilyArray)];
 
         document.getElementById('background').innerHTML = 'Background Color: ';
-        for (let a = 0; a < backgroundColorUniqueArray.length; a++) {
+        if (backgroundColorUniqueArray.length === 0) {
           // Create an "li" node:
           const node = document.createElement('li');
-          node.style.background = backgroundColorUniqueArray[a];
+          const textnode = document.createTextNode('No Background Color Found');
+          // Append the text node to the "li" node:
+          node.appendChild(textnode);
           node.style.listStyle = 'none';
-          node.style.width = '20px';
-          node.style.height = '20px';
+
           document.getElementById('backgroundColor').appendChild(node);
+        } else {
+          for (let a = 0; a < backgroundColorUniqueArray.length; a++) {
+            // Create an "li" node:
+            const node = document.createElement('li');
+            node.style.background = backgroundColorUniqueArray[a];
+            node.style.listStyle = 'none';
+            node.style.width = '20px';
+            node.style.height = '20px';
+            node.style.borderRadius = '30%';
+            node.style.border = '1.5px solid black';
+
+            if (
+              document.getElementById('backgroundColor').innerText ===
+              'No Background Color Found'
+            ) {
+              document.getElementById('backgroundColor').innerText = '';
+              document.getElementById('backgroundColor').appendChild(node);
+            } else {
+              document.getElementById('backgroundColor').appendChild(node);
+            }
+          }
         }
 
         document.getElementById('font').innerHTML = 'Font Size: ';
 
-        for (let a = 0; a < fontSizeUniqueArray.length; a++) {
+        if (fontSizeUniqueArray.length === 0) {
           // Create an "li" node:
           const node = document.createElement('li');
-          const textnode = document.createTextNode(fontSizeUniqueArray[a]);
+          const textnode = document.createTextNode('No Font Size Found');
           // Append the text node to the "li" node:
           node.appendChild(textnode);
           node.style.listStyle = 'none';
-          node.style.marginRight = '10px';
 
           document.getElementById('fontSize').appendChild(node);
+        } else {
+          for (let a = 0; a < fontSizeUniqueArray.length; a++) {
+            // Create an "li" node:
+            const node = document.createElement('li');
+            const textnode = document.createTextNode(fontSizeUniqueArray[a]);
+            // Append the text node to the "li" node:
+            node.appendChild(textnode);
+            node.style.listStyle = 'none';
+            node.style.marginRight = '10px';
+
+            if (
+              document.getElementById('fontSize').innerText ===
+              'No Font Size Found'
+            ) {
+              document.getElementById('fontSize').innerText = '';
+              document.getElementById('fontSize').appendChild(node);
+            } else {
+              document.getElementById('fontSize').appendChild(node);
+            }
+          }
         }
         document.getElementById('fontFamilyName').innerHTML = 'Font Family: ';
-
-        for (let a = 0; a < fontFamilyUniqueArray.length; a++) {
+        if (fontFamilyUniqueArray.length === 0) {
           // Create an "li" node:
           const node = document.createElement('li');
-          const textnode = document.createTextNode(fontFamilyUniqueArray[a]);
+          const textnode = document.createTextNode('No Font Family Found');
           // Append the text node to the "li" node:
           node.appendChild(textnode);
           node.style.listStyle = 'none';
 
           document.getElementById('fontFamily').appendChild(node);
+        } else {
+          for (let a = 0; a < fontFamilyUniqueArray.length; a++) {
+            // Create an "li" node:
+            const node = document.createElement('li');
+            const textnode = document.createTextNode(fontFamilyUniqueArray[a]);
+            // Append the text node to the "li" node:
+            node.appendChild(textnode);
+            node.style.listStyle = 'none';
+
+            if (
+              document.getElementById('fontFamily').innerText ===
+              'No Font Family Found'
+            ) {
+              document.getElementById('fontFamily').innerText = '';
+              document.getElementById('fontFamily').appendChild(node);
+            } else {
+              document.getElementById('fontFamily').appendChild(node);
+            }
+          }
         }
-
         document.getElementById('colorName').innerHTML = 'Colors: ';
-
-        for (let a = 0; a < uniqueArray.length; a++) {
+        if (uniqueArray.length === 0) {
           // Create an "li" node:
           const node = document.createElement('li');
-          node.style.background = uniqueArray[a];
-          node.style.marginRight = '10px';
+          const textnode = document.createTextNode('No Colors Found');
+          // Append the text node to the "li" node:
+          node.appendChild(textnode);
           node.style.listStyle = 'none';
-          node.style.width = '20px';
-          node.style.height = '20px';
+
           document.getElementById('color').appendChild(node);
+        } else {
+          for (let a = 0; a < uniqueArray.length; a++) {
+            // Create an "li" node:
+            const node = document.createElement('li');
+            node.style.background = uniqueArray[a];
+            node.style.marginRight = '10px';
+            node.style.listStyle = 'none';
+            node.style.width = '20px';
+            node.style.height = '20px';
+            node.style.borderRadius = '30%';
+            node.style.border = '1.5px solid black';
+
+            if (
+              document.getElementById('color').innerText === 'No Colors Found'
+            ) {
+              document.getElementById('color').innerText = '';
+              document.getElementById('color').appendChild(node);
+            } else {
+              document.getElementById('color').appendChild(node);
+            }
+          }
         }
       });
     });

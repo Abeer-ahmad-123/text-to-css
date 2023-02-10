@@ -9,9 +9,9 @@
 #input {
   position: absolute;
   top: 0px;
-  height: 30px;
+  height: 50px;
   margin-top: 10px;
-  width: 30%;
+  width: 50%;
   border-radius: 5px;
 }
 #color {
