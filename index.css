@@ -19,9 +19,7 @@
 .infoWrapper {
   display: grid;
 }
-#fontFamilyName {
-  width: 160px;
-}
+
 .inputWrapper h3 {
   position: absolute;
   top: 0px;

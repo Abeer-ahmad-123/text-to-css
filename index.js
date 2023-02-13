@@ -1,5 +1,3 @@
-console.log('Checking paste operation.');
-
 document.addEventListener('paste', function (e) {
   let total = [];
   let uniqueArray = [];
@@ -7,15 +5,10 @@ document.addEventListener('paste', function (e) {
   let backgroundColorUniqueArray = [];
   let fontFamilyUniqueArray = [];
   emptyDiv();
-  console.log('The Past is Happens');
-  console.log(e.clipboardData.types);
   ['text/plain', 'text/html'].forEach((format) => {
-    console.log(`Format: ${format}`);
     total.push(e.clipboardData.getData(format));
 
-    const style = e.clipboardData.getData(format);
     const input = e.clipboardData.getData(format);
-    console.log('input', input);
     function extractSubstr(str, regexp) {
       return (
         str
@@ -29,7 +22,6 @@ document.addEventListener('paste', function (e) {
       return extractSubstr(str, /\S+/g);
     }
     var word = getWordsByNonWhiteSpace(total[0]);
-    console.log(word.length);
 
     document.getElementById('wordCount').innerHTML =
       'Word Count: ' + word.length;
@@ -39,15 +31,11 @@ document.addEventListener('paste', function (e) {
     let styleStartIndexes = [];
     let styleEndIndexes = [];
     let styleArray2 = [];
-    let startindex;
-    let endIndex;
     let i = 0;
     let colorArray = [];
     let fontSizeArray = [];
     let backgroundArray = [];
     let fontFamilyArray = [];
-
-    let newArray2;
 
     // to get start and end index of style
     gettingStartAndEndIndexes(
@@ -65,6 +53,7 @@ document.addEventListener('paste', function (e) {
 
     //adding data to the respective array
     addDatatoArray(
+      styleArray2,
       newArray,
       input,
       colorArray,
@@ -255,6 +244,7 @@ function arrayIsEmpty(text, id) {
   }
 }
 function addDatatoArray(
+  styleArray2,
   newArray,
   input,
   colorArray,
@@ -273,7 +263,6 @@ function addDatatoArray(
     let replaceHeaderColor = replaceAllBrackets.replaceAll('header-color,', '');
     let removeSpaces = replaceHeaderColor.replaceAll(' ', '');
     const mapVal = removeSpaces.split(';');
-    console.log('mapVal', mapVal);
     let regex = /^([a-zA-Z]+)(?:-([a-zA-Z]+))+$/;
     for (var j = 0; j < mapVal.length; j++) {
       if (mapVal[j].includes('color')) {
