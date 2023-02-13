@@ -278,8 +278,10 @@ function addDatatoArray(
     for (var j = 0; j < mapVal.length; j++) {
       if (mapVal[j].includes('color')) {
         if (
-          mapVal[j].split(':')[0].match(regex) === null &&
-          mapVal[j].split(':')[1].match(regex) === null
+          (mapVal[j].split(':')[0].match(regex) === null &&
+            mapVal[j].split(':')[1].match(regex) === null) ||
+          (mapVal[j].split(':')[0].match(regex) === null &&
+            mapVal[j].split(':')[1].match(regex) !== null)
         ) {
           colorArray.push(mapVal[j].split(':')[1]);
         }
