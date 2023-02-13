@@ -61,7 +61,7 @@ let total=[];
 
         const style = e.clipboardData.getData(format);
         const input = e.clipboardData.getData(format);
-
+console.log("input",input)
         function extractSubstr(str, regexp) {
         return str.replace(/[^\w\s]|_/g, '')
         .replace(/\s+/g, ' ')
@@ -121,17 +121,18 @@ let total=[];
 
         document.getElementById('background').innerHTML = 'Background Color: ';
         if (backgroundColorUniqueArray.length === 0) {
-          console.log("trigggeredd")
           arrayIsEmpty('No Background Color Found', 'backgroundColor');
         } else {
           for (let a = 0; a < backgroundColorUniqueArray.length; a++) {
             // Create an "li" node of data in array:
             const node = document.createElement('li');
             const NameNode = document.createElement('li');
-            const textnode = document.createTextNode(backgroundColorUniqueArray[a]+")");
+            const textnode = document.createTextNode(backgroundColorUniqueArray[a].includes('rgb')?backgroundColorUniqueArray[a]+")":backgroundColorUniqueArray[a]);
             // Append the text node to the "li" node:
             NameNode.style.listStyle='none'
             NameNode.style.marginRight='5px'
+            NameNode.style.marginLeft='5px'
+
             NameNode.appendChild(textnode);
 
             node.style.listStyle = 'none';
@@ -201,7 +202,7 @@ let total=[];
             // Create an "li" node:
             const node = document.createElement('li');
             const NameNode = document.createElement('li');
-            const textnode = document.createTextNode(uniqueArray[a]+")");
+            const textnode = document.createTextNode(uniqueArray[a].includes('rgb')?uniqueArray[a]+")":uniqueArray[a]);
             // Append the text node to the "li" node:
             NameNode.style.listStyle='none'
             NameNode.style.marginRight='5px'
@@ -309,11 +310,15 @@ let total=[];
         let replaceMonoQuot = replaceQuot.replaceAll('Mono&quot;', '');
         let replaceVar = replaceMonoQuot.replaceAll('var(--', '');
         let replaceAllBrackets = replaceVar.replaceAll(')', '');
-        const mapVal = replaceAllBrackets.split(';');
+        let replaceHeaderColor = replaceAllBrackets.replaceAll('header-color,',"")
+        let removeSpaces = replaceHeaderColor.replaceAll(' ',"")
+        const mapVal = removeSpaces.split(';');
+        console.log("mapVal",mapVal)
+        let regex = /^([a-zA-Z]+)(?:-([a-zA-Z]+))+$/;
         for (var j = 0; j < mapVal.length; j++) {
-          let result = mapVal[j].replace('&quot', '');
           if (mapVal[j].includes('color')) {
-            if (!mapVal[j].includes('-')) {
+            if(mapVal[j].split(':')[0].match(regex)===null && mapVal[j].split(':')[1].match(regex)===null )
+            {
               colorArray.push(mapVal[j].split(':')[1]);
             }
           }
