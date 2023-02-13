@@ -69,3 +69,48 @@
 #fontSize {
   margin-left: 10px;
 }
+.textStyleWrapper {
+  display: none;
+}
+
+.seeMoreTriggered {
+  display: block !important;
+  margin-top: 10px;
+}
+#seeMore {
+  margin-top: 5px;
+  display: none;
+  border-radius: 5%;
+}
+#wordSpacing,
+#textDecorThick,
+#textDecorStyle,
+#textDecorColor {
+  display: flex;
+  margin-bottom: 10px;
+}
+#wordSpacing {
+  margin-top: 10px;
+}
+
+/* CSS */
+button {
+  background: #7cb9e8;
+  border-radius: 999px;
+  box-shadow: #7cb9e8 0 10px 20px -10px;
+  box-sizing: border-box;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+  opacity: 1;
+  outline: 0 solid transparent;
+  padding: 8px 18px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  width: fit-content;
+  word-break: break-word;
+  border: 0;
+}

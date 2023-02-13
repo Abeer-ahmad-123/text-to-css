@@ -1,14 +1,15 @@
+let total = [];
+
 document.addEventListener('paste', function (e) {
-  let total = [];
-  let uniqueArray = [];
-  let fontSizeUniqueArray = [];
-  let backgroundColorUniqueArray = [];
-  let fontFamilyUniqueArray = [];
   emptyDiv();
   ['text/plain', 'text/html'].forEach((format) => {
     total.push(e.clipboardData.getData(format));
 
     const input = e.clipboardData.getData(format);
+    let button = document.getElementById('seeMore');
+    button.disabled = false;
+    button.style.display = 'block';
+    document.getElementById('textStyleWrapperId').style.display = 'none';
     function extractSubstr(str, regexp) {
       return (
         str
@@ -36,6 +37,18 @@ document.addEventListener('paste', function (e) {
     let fontSizeArray = [];
     let backgroundArray = [];
     let fontFamilyArray = [];
+    let wordSpacingArray = [];
+    let textDecorThickArray = [];
+    let textDecorStyleArray = [];
+    let textDecorColorArray = [];
+    let uniqueArray = [];
+    let fontSizeUniqueArray = [];
+    let backgroundColorUniqueArray = [];
+    let fontFamilyUniqueArray = [];
+    let wordSpacingUniqueArray = [];
+    let textDecorThickUniqueArray = [];
+    let textDecorStyleUniqueArray = [];
+    let textDecorColorUniqueArray = [];
 
     // to get start and end index of style
     gettingStartAndEndIndexes(
@@ -59,12 +72,21 @@ document.addEventListener('paste', function (e) {
       colorArray,
       fontSizeArray,
       backgroundArray,
-      fontFamilyArray
+      fontFamilyArray,
+      wordSpacingArray,
+      textDecorThickArray,
+      textDecorStyleArray,
+      textDecorColorArray
     );
     uniqueArray = [...new Set(colorArray)];
     fontSizeUniqueArray = [...new Set(fontSizeArray)];
     backgroundColorUniqueArray = [...new Set(backgroundArray)];
     fontFamilyUniqueArray = [...new Set(fontFamilyArray)];
+
+    wordSpacingUniqueArray = [...new Set(wordSpacingArray)];
+    textDecorThickUniqueArray = [...new Set(textDecorThickArray)];
+    textDecorStyleUniqueArray = [...new Set(textDecorStyleArray)];
+    textDecorColorUniqueArray = [...new Set(textDecorColorArray)];
 
     document.getElementById('background').innerHTML = 'Background Color: ';
     if (backgroundColorUniqueArray.length === 0) {
@@ -171,6 +193,113 @@ document.addEventListener('paste', function (e) {
         replaceInnerText('No Colors Found', 'color', NameNode, node);
       }
     }
+    document.getElementById('wordSpacing').innerHTML = 'Word Spacing: ';
+    if (wordSpacingUniqueArray.length === 0) {
+      arrayIsEmpty('No Spacing Found', 'wordSpacing');
+    } else {
+      for (let a = 0; a < wordSpacingUniqueArray.length; a++) {
+        // Create an "li" node:
+        const node = document.createElement('li');
+        const textnode = document.createTextNode(wordSpacingUniqueArray[a]);
+        const NameNode = document.createElement('li');
+        const textnode2 = document.createTextNode('');
+        // Append the text node to the "li" node:
+        NameNode.style.listStyle = 'none';
+        NameNode.appendChild(textnode2);
+        // Append the text node to the "li" node:
+        node.appendChild(textnode);
+        node.style.listStyle = 'none';
+        node.style.marginRight = '5px';
+        node.style.marginLeft = '5px';
+
+        replaceInnerText('No Spacing Found', 'wordSpacing', NameNode, node);
+      }
+    }
+
+    document.getElementById('textDecorThick').innerHTML = 'Text Decoration: ';
+    if (textDecorThickUniqueArray.length === 0) {
+      arrayIsEmpty('No Text Decoration Found', 'textDecorThick');
+    } else {
+      for (let a = 0; a < textDecorThickUniqueArray.length; a++) {
+        const node = document.createElement('li');
+        const textnode = document.createTextNode(textDecorThickUniqueArray[a]);
+        // Append the text node to the "li" node:
+        const NameNode = document.createElement('li');
+        const textnode2 = document.createTextNode('');
+        // Append the text node to the "li" node:
+        NameNode.style.listStyle = 'none';
+        NameNode.appendChild(textnode2);
+        node.appendChild(textnode);
+        node.style.listStyle = 'none';
+        node.style.marginRight = '5px';
+        node.style.marginLeft = '5px';
+
+        replaceInnerText(
+          'No Text Decoration Found',
+          'textDecorThick',
+          NameNode,
+          node
+        );
+      }
+    }
+
+    document.getElementById('textDecorStyle').innerHTML = 'Text Style: ';
+    if (textDecorStyleUniqueArray.length === 0) {
+      arrayIsEmpty('No Style Found', 'textDecorStyle');
+    } else {
+      for (let a = 0; a < textDecorStyleUniqueArray.length; a++) {
+        const node = document.createElement('li');
+        const textnode = document.createTextNode(textDecorStyleUniqueArray[a]);
+        // Append the text node to the "li" node:
+        const NameNode = document.createElement('li');
+        const textnode2 = document.createTextNode('');
+        // Append the text node to the "li" node:
+        NameNode.style.listStyle = 'none';
+        NameNode.appendChild(textnode2);
+        node.appendChild(textnode);
+        node.style.listStyle = 'none';
+        node.style.marginRight = '5px';
+        node.style.marginLeft = '5px';
+        replaceInnerText('No Style Found', 'textDecorStyle', NameNode, node);
+      }
+    }
+
+    document.getElementById('textDecorColor').innerHTML =
+      'Text Decoration Color: ';
+    if (textDecorColorUniqueArray.length === 0) {
+      arrayIsEmpty('No Text Decoration Color Found', 'textDecorColor');
+    } else {
+      for (let a = 0; a < textDecorColorUniqueArray.length; a++) {
+        // Create an "li" node:
+        const node = document.createElement('li');
+        const NameNode = document.createElement('li');
+        const textnode = document.createTextNode(
+          textDecorColorUniqueArray[a].includes('rgb')
+            ? textDecorColorUniqueArray[a] + ')'
+            : textDecorColorUniqueArray[a]
+        );
+        // Append the text node to the "li" node:
+        NameNode.style.listStyle = 'none';
+        NameNode.style.marginRight = '5px';
+        NameNode.style.marginLeft = '5px';
+
+        NameNode.appendChild(textnode);
+        node.style.background = textDecorColorUniqueArray[a];
+        node.style.marginRight = '10px';
+        node.style.listStyle = 'none';
+        node.style.width = '20px';
+        node.style.height = '20px';
+        node.style.borderRadius = '30%';
+        node.style.border = '1.5px solid black';
+
+        replaceInnerText(
+          'No Text Decoration Color Found',
+          'textDecorColor',
+          NameNode,
+          node
+        );
+      }
+    }
   });
 });
 function emptyDiv() {
@@ -231,6 +360,8 @@ function arrayIsEmpty(text, id) {
     // Append the text node to the "li" node:
     node.appendChild(textnode);
     node.style.listStyle = 'none';
+    node.style.marginRight = '5px';
+    node.style.marginLeft = '5px';
 
     document.getElementById(id).appendChild(node);
   } else {
@@ -239,6 +370,8 @@ function arrayIsEmpty(text, id) {
     // Append the text node to the "li" node:
     node.appendChild(textnode);
     node.style.listStyle = 'none';
+    node.style.marginRight = '5px';
+    node.style.marginLeft = '5px';
 
     document.getElementById(id).appendChild(node);
   }
@@ -250,7 +383,11 @@ function addDatatoArray(
   colorArray,
   fontSizeArray,
   backgroundArray,
-  fontFamilyArray
+  fontFamilyArray,
+  wordSpacingArray,
+  textDecorThickArray,
+  textDecorStyleArray,
+  textDecorColorArray
 ) {
   //adding respective data into array's
   for (var k = 0; k < newArray.length; k++) {
@@ -292,6 +429,23 @@ function addDatatoArray(
       if (mapVal[j].includes('font-family')) {
         fontFamilyArray.push(mapVal[j].split(':')[1]);
       }
+      if (mapVal[j].includes('word-spacing')) {
+        wordSpacingArray.push(mapVal[j].split(':')[1]);
+      }
+      if (mapVal[j].includes('text-decoration-thickness')) {
+        textDecorThickArray.push(mapVal[j].split(':')[1]);
+      }
+      if (mapVal[j].includes('text-decoration-style')) {
+        textDecorStyleArray.push(mapVal[j].split(':')[1]);
+      }
+      if (mapVal[j].includes('text-decoration-color')) {
+        textDecorColorArray.push(mapVal[j].split(':')[1]);
+      }
     }
   }
+}
+function seeMore() {
+  document.getElementById('seeMore').style.display = 'none';
+  var element = document.getElementById('textStyleWrapperId');
+  element.style.display = 'block';
 }
